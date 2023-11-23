@@ -1,15 +1,14 @@
 package sk.uniba.fmph.dcs;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TableArea{
     private ArrayList<TyleSource> _tyleSources;
-    public TableArea(){
+    public TableArea(TableCenter tableCenter, List<Factory> factories){
         this._tyleSources = new ArrayList<>();
-        this._tyleSources.add(TableCenter.getInstance());
-        for (int i = 0; i < 4; i++){
-            this._tyleSources.add(new Factory());
-        }
+        this._tyleSources.add(tableCenter);
+        this._tyleSources.addAll(factories);
     }
 
     public Tile[] take(int sourceId, int idx){
@@ -31,8 +30,12 @@ public class TableArea{
 
     public String state(){
         StringBuilder ans = new StringBuilder();
-        int i = 0;
-        for (TyleSource tile : _tyleSources) ans.append(tile.toString());
+        ans.append("TableCenter:\n");
+        ans.append(this._tyleSources.get(0).state()).append("\n");
+        ans.append("Factories:\n");
+        for (int i=1; i < _tyleSources.size(); i++){
+            ans.append(this._tyleSources.get(i).state()).append("\n");
+        }
         return ans.toString();
     }
 }

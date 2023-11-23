@@ -1,17 +1,18 @@
 package sk.uniba.fmph.dcs;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-public class UsedTyles {
+public class UsedTyles implements UsedTilesGiveInterface{
     private ArrayList<Tile> _usedTyles;
     public UsedTyles(){
         _usedTyles = new ArrayList<>();
     }
 
-    public void give(Tile[] tiles){
-        for(Tile tile: tiles){
-            _usedTyles.add(tile);
-        }
+    @Override
+    public void give(Collection<Tile> tiles){
+        _usedTyles.addAll(tiles);
     }
 
     public String state(){
@@ -21,9 +22,8 @@ public class UsedTyles {
         return ans.toString();
     }
 
-    public Tile[] takeAll(){
-        Tile[] ans = new Tile[_usedTyles.size()];
-        _usedTyles.toArray(ans);
+    public List<Tile> takeAll(){
+        List<Tile> ans = new ArrayList<>(this._usedTyles);
         _usedTyles.clear();
         return ans;
     }
