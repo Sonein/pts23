@@ -32,21 +32,12 @@ public class Board{
         //int tempResult = points.getValue() + bin.finishRound().getValue();
         //points = new Points(tempResult>0?tempResult:0);
         //if a row is full, end the game
-        for (int i = 0; i < 5; i++) {
-            if(wall.get(i).getTiles().size() == 5){
-                //maybe game controlles this
-                endGame();
-                return FinishRoundResult.GAME_FINISHED;
-            }
-        }
-        return FinishRoundResult.NORMAL;
+        return GameFinished.gameFinished(wall);
     }
 
     public void endGame(){
-        FinalPointsCalculation finalPointCalculation = new FinalPointsCalculation();
         points.addPoints(FinalPointsCalculation.getPoints(wall));
         //points = new Points(FinalPointsCalculation.getPoints(wall).getValue()+ points.getValue());
-        new GameFinished();
     }
 
     public String state(){
