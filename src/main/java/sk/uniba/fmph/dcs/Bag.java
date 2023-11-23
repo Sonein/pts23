@@ -13,6 +13,7 @@ public class Bag {
     private Bag() {
         this.tiles = new ArrayList<>();
         fill(true);
+        this.usedTyles = UsedTyles.getInstance();
     }
 
     private static class BagHolder {
@@ -46,10 +47,6 @@ public class Bag {
 
     public static Bag getInstance() {
         return Bag.BagHolder.INSTANCE;
-    }
-
-    public void setUsedTyles(UsedTyles usedTyles) {
-        this.usedTyles = usedTyles;
     }
 
     public List<Tile> take(int count){

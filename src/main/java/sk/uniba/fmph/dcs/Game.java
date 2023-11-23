@@ -50,6 +50,10 @@ public class Game implements GameInterface{
                 }
                 if(finishRoundResult == FinishRoundResult.GAME_FINISHED){
                     this.gameObserver.notifyEverybody(state());
+                    for (Board b:
+                         this.boards) {
+                        b.endGame();
+                    }
                     return false;
                 } else {
                     this.tableArea.startNewRound();

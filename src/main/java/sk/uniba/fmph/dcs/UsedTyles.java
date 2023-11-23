@@ -6,8 +6,16 @@ import java.util.List;
 
 public class UsedTyles implements UsedTilesGiveInterface{
     private ArrayList<Tile> _usedTyles;
-    public UsedTyles(){
+    private UsedTyles(){
         _usedTyles = new ArrayList<>();
+    }
+
+    private static class UsedTylesHolder {
+        private static final UsedTyles INSTANCE = new UsedTyles();
+    }
+
+    public static UsedTyles getInstance() {
+        return UsedTyles.UsedTylesHolder.INSTANCE;
     }
 
     @Override
@@ -17,7 +25,6 @@ public class UsedTyles implements UsedTilesGiveInterface{
 
     public String state(){
         StringBuilder ans = new StringBuilder();
-        int n = _usedTyles.size();
         for (Tile tile : _usedTyles) ans.append(tile.toString());
         return ans.toString();
     }

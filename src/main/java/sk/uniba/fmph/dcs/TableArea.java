@@ -30,11 +30,10 @@ public class TableArea{
 
     public String state(){
         StringBuilder ans = new StringBuilder();
-        ans.append("TableCenter:\n");
-        ans.append(this._tyleSources.get(0).state()).append("\n");
-        ans.append("Factories:\n");
-        for (int i=1; i < _tyleSources.size(); i++){
-            ans.append(this._tyleSources.get(i).state()).append("\n");
+        ans.append("TyleSources:\n");
+        for (TyleSource ts:
+             this._tyleSources) {
+            ans.append(ts.state()).append("\n");
         }
         return ans.toString();
     }
