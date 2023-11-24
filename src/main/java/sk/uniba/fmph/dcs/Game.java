@@ -5,19 +5,18 @@ import java.util.List;
 
 public class Game implements GameInterface{
 
-    private final int players;
     private final Bag bag;
     private final TableArea tableArea;
     private final List<Board> boards;
     private final GameObserver gameObserver;
-    private int currentPlayer = 1;
+    private boolean gameDone;
 
-    public Game (final int playerCount, final Bag bag,final TableArea tableArea,final List<Board> boards,final GameObserver gameObserver) {
-        this.players = playerCount;
+    public Game (final Bag bag,final TableArea tableArea,final List<Board> boards,final GameObserver gameObserver) {
         this.bag = bag;
         this.tableArea = tableArea;
         this.boards = new ArrayList<>(boards);
         this.gameObserver = gameObserver;
+        this.gameDone = false;
     }
 
     private String state(){
@@ -36,8 +35,11 @@ public class Game implements GameInterface{
 
     @Override
     public Boolean take(Integer playerId, Integer sourceId, Integer idx, Integer destinationIdx) {
-        if(this.currentPlayer != playerId){
+        if(gameDone){
             return false;
+        }
+        if(playerId >= this.boards.size()){
+            throw new IllegalArgumentException();
         } else {
             if (this.tableArea.isRoundEnd()){
                 FinishRoundResult finishRoundResult = FinishRoundResult.NORMAL;
@@ -54,6 +56,7 @@ public class Game implements GameInterface{
                          this.boards) {
                         b.endGame();
                     }
+                    this.gameDone = true;
                     return false;
                 } else {
                     this.tableArea.startNewRound();
@@ -62,11 +65,6 @@ public class Game implements GameInterface{
             Tile [] toPut = this.tableArea.take(sourceId, idx);
             this.boards.get(playerId).put(destinationIdx, toPut);
             this.gameObserver.notifyEverybody(state());
-            if(this.currentPlayer == this.players){
-                this.currentPlayer = 1;
-            } else {
-                this.currentPlayer++;
-            }
             return true;
         }
     }
