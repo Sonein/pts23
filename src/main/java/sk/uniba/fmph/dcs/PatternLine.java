@@ -1,9 +1,6 @@
 package sk.uniba.fmph.dcs;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class PatternLine {
 
@@ -15,10 +12,10 @@ public class PatternLine {
     private final Floor floor;
     
 
-    public PatternLine(int capacity, final UsedTilesGiveInterface usedTyles, final WallLine wallLine, final Floor floor) {
+    public PatternLine(int capacity, final WallLine wallLine, final Floor floor) {
         this.capacity = capacity;
         this.tiles = new Tile[capacity];
-        this.usedTyles = usedTyles;
+        this.usedTyles = UsedTyles.getInstance();
         this.wallLine = wallLine;
         this.floor = floor;
     }
@@ -29,8 +26,12 @@ public class PatternLine {
             if(tile.equals(Tile.STARTING_PLAYER)){
                 this.floor.put(Collections.singleton(tile));
             } else if (this.lastIndex < this.capacity) {
-                this.tiles[this.lastIndex] = tile;
-                this.lastIndex++;
+                if (this.tiles[0] == null || this.tiles[0].equals(tile)) {
+                    this.tiles[this.lastIndex] = tile;
+                    this.lastIndex++;
+                } else {
+                    this.floor.put(Collections.singleton(tile));
+                }
             } else {
                 this.floor.put(Collections.singleton(tile));
             }
@@ -39,10 +40,7 @@ public class PatternLine {
 
     public Points finishRound(){
         if(this.lastIndex == this.capacity && this.wallLine.canPutTile(this.tiles[0])){
-            List<Tile> temp = new ArrayList<>();
-            for (int i = 1; i < this.lastIndex; i++){
-                temp.add(this.tiles[i]);
-            }
+            List<Tile> temp = new ArrayList<>(Arrays.asList(this.tiles).subList(1, this.lastIndex));
             this.usedTyles.give(temp);
             Tile tileToGive = this.tiles[0];
             this.tiles = new Tile[this.capacity];

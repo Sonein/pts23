@@ -13,22 +13,25 @@ public class Factory implements TyleSource{
         this.tiles = new ArrayList<>();
         this.tableCenter = TableCenter.getInstance();
         this.bag = Bag.getInstance();
+        startNewRound();
     }
 
     @Override
     public Tile[] take(int idx) {
         List<Tile> toReturn = new ArrayList<>();
-        if(idx < 4){
-            Tile toTake = this.tiles.get(idx);
-            for (Tile t:
-                 this.tiles) {
-                if(t.equals(toTake)){
-                    toReturn.add(t);
-                }
-            }
-            while (this.tiles.remove(toTake));
-            this.tableCenter.add(this.tiles.toArray(Tile[]::new));
+        if (idx >= 4 || this.tiles.isEmpty() || idx < 0) {
+            return null;
         }
+        Tile toTake = this.tiles.get(idx);
+        for (Tile t:
+             this.tiles) {
+            if(t.equals(toTake)){
+                toReturn.add(t);
+            }
+        }
+        while (this.tiles.remove(toTake));
+        this.tableCenter.add(this.tiles.toArray(Tile[]::new));
+        this.tiles.clear();
         return toReturn.toArray(Tile[]::new);
     }
 

@@ -5,13 +5,20 @@ import java.util.Collections;
 
 public class TableCenter implements TyleSource{
     private static TableCenter instance = new TableCenter();
-    private TableCenter(){}
+    private TableCenter(){
+        this._tyles = new ArrayList<>();
+        this._tyles.add(Tile.STARTING_PLAYER);
+    }
     public static TableCenter getInstance() {
         return instance;
     }
     private ArrayList<Tile> _tyles;
+
     @Override
     public Tile[] take(int idx) {
+        if(idx >= this._tyles.size()){
+            return null;
+        }
         Tile taken = _tyles.get(idx);
         ArrayList<Tile> ans = new ArrayList<>();
         for(Tile tile: _tyles){

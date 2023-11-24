@@ -12,6 +12,9 @@ public class TableArea{
     }
 
     public Tile[] take(int sourceId, int idx){
+        if(sourceId >= this._tyleSources.size()){
+            return null;
+        }
         return _tyleSources.get(sourceId).take(idx);
     }
 

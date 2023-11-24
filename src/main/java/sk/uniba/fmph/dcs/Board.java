@@ -3,7 +3,7 @@ package sk.uniba.fmph.dcs;
 import java.util.*;
 
 public class Board{
-    private Points points;
+    private final Points points;
     private final List<PatternLine> patternLines;
     private final Floor bin;
     private final List<WallLine> wall;
@@ -41,16 +41,17 @@ public class Board{
     }
 
     public String state(){
-        String toReturn = "Pattern Lines:\n ";
+        StringBuilder toReturn = new StringBuilder("Pattern Lines:\n ");
         for (PatternLine row : patternLines ){
-            toReturn += row.state() + "\n";
+            toReturn.append(row.state()).append("\n");
         }
-        toReturn += "Wall:\n ";
+        toReturn.append("Wall:\n ");
         for (WallLine line : wall){
-            toReturn += line.state() + "\n";
+            toReturn.append(line.state()).append("\n");
         }
-        toReturn += "Floor:\n";
-        toReturn += bin.state();
-        return toReturn;
+        toReturn.append("Floor:\n");
+        toReturn.append(bin.state()).append("\n");
+        toReturn.append("Points:").append(this.points).append("\n");
+        return toReturn.toString();
     }
 }
