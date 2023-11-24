@@ -8,7 +8,7 @@ public class Bag {
 
     private List<Tile> tiles;
 
-    private UsedTyles usedTyles;
+    private final UsedTyles usedTyles;
 
     private Bag() {
         this.tiles = new ArrayList<>();
@@ -40,6 +40,7 @@ public class Bag {
             Collections.shuffle(this.tiles);
         } else {
             List <Tile> temp = this.usedTyles.takeAll();
+            temp.remove(Tile.STARTING_PLAYER);
             Collections.shuffle(temp);
             this.tiles = new ArrayList<>(temp);
         }
@@ -52,10 +53,10 @@ public class Bag {
     public List<Tile> take(int count){
         List<Tile> toReturn = new ArrayList<>();
         for(int i = 0; i < count; i++){
-            toReturn.add(this.tiles.remove(0));
             if(this.tiles.isEmpty()){
                 fill(false);
             }
+            toReturn.add(this.tiles.remove(0));
         }
         return toReturn;
     }
@@ -66,6 +67,8 @@ public class Bag {
                 this.tiles) {
             stringBuilder.append(t.toString());
         }
+        stringBuilder.append("\nUsedTyles:\n");
+        stringBuilder.append(this.usedTyles.state());
         return stringBuilder.toString();
     }
 }
