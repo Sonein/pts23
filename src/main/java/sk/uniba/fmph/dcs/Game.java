@@ -11,6 +11,10 @@ public class Game implements GameInterface{
     private final GameObserver gameObserver;
     private boolean gameDone;
     private int exitCode;
+    private int currentPlayer;
+    private final int playerCap;
+    private int startingPlayer;
+
 
     public Game (final Bag bag,final TableArea tableArea,final List<Board> boards,final GameObserver gameObserver) {
         this.bag = bag;
@@ -19,6 +23,9 @@ public class Game implements GameInterface{
         this.gameObserver = gameObserver;
         this.gameDone = false;
         this.exitCode = 0;
+        this.currentPlayer = 0;
+        this.startingPlayer = 0;
+        this.playerCap = boards.size()-1;
     }
 
     private String state(){
@@ -43,11 +50,11 @@ public class Game implements GameInterface{
     @Override
     public Boolean take(Integer playerId, Integer sourceId, Integer idx, Integer destinationIdx) {
         this.exitCode = 0;
-        if(gameDone){
+        if(this.gameDone){
             this.exitCode = 4;
             return false;
         }
-        if(playerId >= this.boards.size() || playerId < 0){
+        if(playerId > this.playerCap || playerId < 0){
             this.exitCode = 1;
             return false;
         } else {
@@ -71,16 +78,33 @@ public class Game implements GameInterface{
                     return false;
                 } else {
                     this.tableArea.startNewRound();
+                    this.currentPlayer = this.startingPlayer;
                     this.exitCode = 2;
                 }
+            }
+            if(playerId != this.currentPlayer){
+                this.exitCode = 1;
+                return false;
             }
             Tile [] toPut = this.tableArea.take(sourceId, idx);
             if(toPut == null){
                 this.exitCode = 1;
                 return false;
             }
+            for (Tile t:
+                 toPut) {
+                if (t.equals(Tile.STARTING_PLAYER)) {
+                    this.startingPlayer = playerId;
+                    break;
+                }
+            }
             this.boards.get(playerId).put(destinationIdx, toPut);
             this.gameObserver.notifyEverybody(state());
+            if (this.currentPlayer == this.playerCap){
+                this.currentPlayer = 0;
+            } else {
+                this.currentPlayer++;
+            }
             return true;
         }
     }
