@@ -30,6 +30,7 @@ public class UsedTyles implements UsedTilesGiveInterface{
     }
 
     public List<Tile> takeAll(){
+        this._usedTyles.remove(Tile.STARTING_PLAYER);
         List<Tile> ans = new ArrayList<>(this._usedTyles);
         _usedTyles.clear();
         return ans;

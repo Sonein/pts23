@@ -40,7 +40,6 @@ public class Bag {
             Collections.shuffle(this.tiles);
         } else {
             List <Tile> temp = this.usedTyles.takeAll();
-            temp.remove(Tile.STARTING_PLAYER);
             Collections.shuffle(temp);
             this.tiles = new ArrayList<>(temp);
         }

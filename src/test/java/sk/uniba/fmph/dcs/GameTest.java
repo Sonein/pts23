@@ -149,4 +149,50 @@ public class GameTest {
         assertFalse(game.take(0, 0, 0, 0));
         assertEquals("Game has already ended", game.getExitCode(), 4);
     }
+
+    @Test
+    public void testCorrectPlayersTurn(){
+        ArrayList<Tile> tileTypes = new ArrayList<>();
+        tileTypes.add(Tile.BLUE);
+        tileTypes.add(Tile.GREEN);
+        tileTypes.add(Tile.RED);
+        tileTypes.add(Tile.YELLOW);
+        tileTypes.add(Tile.BLACK);
+        var pointPattern = new ArrayList<Points>();
+        pointPattern.add(new Points(1));
+        pointPattern.add(new Points(2));
+        pointPattern.add(new Points(2));
+        Factory factory = new Factory();
+
+        List<WallLine> mockWallLines1 = new ArrayList<>();
+        List<PatternLine> mockPatternLines1 = new ArrayList<>();
+        List<WallLine> mockWallLines2 = new ArrayList<>();
+        List<PatternLine> mockPatternLines2 = new ArrayList<>();
+        Floor floor1 = new Floor(UsedTyles.getInstance(), pointPattern);
+        Floor floor2 = new Floor(UsedTyles.getInstance(), pointPattern);
+        for(int i = 0; i < 5; i++){
+            mockWallLines1.add(new WallLine(tileTypes, null, null));
+            mockPatternLines1.add(new PatternLine(2, mockWallLines1.get(i), floor1));
+            mockWallLines2.add(new WallLine(tileTypes, null, null));
+            mockPatternLines2.add(new PatternLine(2, mockWallLines2.get(i), floor2));
+        }
+
+        List<Board> boards = new ArrayList<>();
+        boards.add(new Board(mockPatternLines1, mockWallLines1, floor1, new Points(0)));
+        boards.add(new Board(mockPatternLines2, mockWallLines2, floor2, new Points(0)));
+        TableArea tableArea = new TableArea(TableCenter.getInstance(), new ArrayList<>(Collections.singleton(factory)));
+        Game game = new Game(Bag.getInstance(), tableArea, boards, GameObserver.getInstance());
+
+        assertTrue("Player 0 takes", game.take(0, 1,0,0));
+        assertFalse("Not Player 0 turn", game.take(0, 0,0,0));
+        assertTrue("Player 1 takes and becomes new starting player", game.take(1, 0,0,0));
+
+        while(!TableCenter.getInstance().isEmpty()){
+            TableCenter.getInstance().take(0);
+        }
+
+        assertFalse("Player 0 is not starting in this round", game.take(0, 0,0,0));
+        assertTrue("Player 1 is starting", game.take(1, 0,0,0));
+        assertTrue("Player 0 takes", game.take(0, 1,0,0));
+    }
 }
