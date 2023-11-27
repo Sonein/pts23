@@ -12,7 +12,7 @@ public class FactoryTest {
     @Test
     public void testHasFourOnStart(){
         Factory factory = new Factory();
-        assertEquals("Size is four", factory.state().length(), 4);
+        assertEquals("Size is four", 4, factory.state().length());
     }
 
     @Test
@@ -29,7 +29,7 @@ public class FactoryTest {
     public void takenWrong(){
         Factory factory = new Factory();
         assertNull("Has taken null", factory.take(5));
-        assertEquals("TableCenter has not changed", TableCenter.getInstance().state().length(), 1);
-        assertEquals("Factory has not changed", factory.state().length(), 4);
+        assertEquals("TableCenter has not changed", 1, TableCenter.getInstance().state().length());
+        assertEquals("Factory has not changed", 4, factory.state().length());
     }
 }

@@ -33,10 +33,10 @@ public class GameTest {
         Game game = new Game(Bag.getInstance(), tableArea, new ArrayList<>(Collections.singleton(board)), GameObserver.getInstance());
 
         assertTrue(game.take(0, 0, 0, 0));
-        assertEquals("Game should accept without change to exitcode", game.getExitCode(), 0);
+        assertEquals("Game should accept without change to exitcode", 0, game.getExitCode());
 
         assertTrue(game.take(0, 1, 0, 0));
-        assertEquals("Game should accept without change to exitcode", game.getExitCode(), 0);
+        assertEquals("Game should accept without change to exitcode", 0, game.getExitCode());
     }
 
     @Test
@@ -62,13 +62,13 @@ public class GameTest {
         Game game = new Game(Bag.getInstance(), tableArea, new ArrayList<>(Collections.singleton(board)), GameObserver.getInstance());
 
         assertFalse(game.take(1, 0, 0, 0));
-        assertEquals("Nonexistent player", game.getExitCode(), 1);
+        assertEquals("Nonexistent player", 1, game.getExitCode());
 
         assertFalse(game.take(0, 2, 0, 0));
-        assertEquals("Nonexistent TyleSource", game.getExitCode(), 1);
+        assertEquals("Nonexistent TyleSource", 1, game.getExitCode());
 
         assertFalse(game.take(0, 1, 5, 0));
-        assertEquals("Nonexistent element in Factory", game.getExitCode(), 1);
+        assertEquals("Nonexistent element in Factory", 1, game.getExitCode());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class GameTest {
         Floor floor = new Floor(UsedTyles.getInstance(), pointPattern);
         for(int i = 0; i < 5; i++){
             mockWallLines.add(new WallLine(tileTypes, null, null));
-            mockPatternLines.add(new PatternLine(2, mockWallLines.get(i), floor));
+            mockPatternLines.add(new PatternLine(i+1, mockWallLines.get(i), floor));
         }
 
         Board board = new Board(mockPatternLines, mockWallLines, floor, new Points(0));
@@ -103,7 +103,7 @@ public class GameTest {
         }
 
         assertTrue(game.take(0, 0, 0, 0));
-        assertEquals("New round has started", game.getExitCode(), 2);
+        assertEquals("New round has started", 2, game.getExitCode());
     }
 
     @Test
@@ -125,7 +125,7 @@ public class GameTest {
         Floor floor = new Floor(UsedTyles.getInstance(), pointPattern);
         for(int i = 0; i < 5; i++){
             mockWallLines.add(new WallLine(tileTypes, null, null));
-            mockPatternLines.add(new PatternLine(2, mockWallLines.get(i), floor));
+            mockPatternLines.add(new PatternLine(i+1, mockWallLines.get(i), floor));
         }
 
         Board board = new Board(mockPatternLines, mockWallLines, floor, new Points(0));
@@ -144,10 +144,10 @@ public class GameTest {
         mockWallLines.get(0).putTile(Tile.BLACK);
 
         assertFalse(game.take(0, 0, 0, 0));
-        assertEquals("Game has ended", game.getExitCode(), 4);
+        assertEquals("Game has ended", 4, game.getExitCode());
 
         assertFalse(game.take(0, 0, 0, 0));
-        assertEquals("Game has already ended", game.getExitCode(), 4);
+        assertEquals("Game has already ended", 4, game.getExitCode());
     }
 
     @Test
@@ -172,9 +172,9 @@ public class GameTest {
         Floor floor2 = new Floor(UsedTyles.getInstance(), pointPattern);
         for(int i = 0; i < 5; i++){
             mockWallLines1.add(new WallLine(tileTypes, null, null));
-            mockPatternLines1.add(new PatternLine(2, mockWallLines1.get(i), floor1));
+            mockPatternLines1.add(new PatternLine(i+1, mockWallLines1.get(i), floor1));
             mockWallLines2.add(new WallLine(tileTypes, null, null));
-            mockPatternLines2.add(new PatternLine(2, mockWallLines2.get(i), floor2));
+            mockPatternLines2.add(new PatternLine(i+1, mockWallLines2.get(i), floor2));
         }
 
         List<Board> boards = new ArrayList<>();

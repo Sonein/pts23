@@ -17,7 +17,11 @@ public class Board{
 
 
     public void put(int destinationIdx, Tile[] tyles){
-        if(destinationIdx < 0 || destinationIdx > patternLines.size())throw new InputMismatchException();
+        if(destinationIdx < 0 || destinationIdx > patternLines.size()){
+            List<Tile> temp = new ArrayList<>(Arrays.asList(tyles));
+            this.bin.put(temp);
+            return;
+        }
         //insert selected tiles into the selected row of pattern
         patternLines.get(destinationIdx).put(List.of(tyles));
     }
@@ -25,19 +29,15 @@ public class Board{
         //adds tiles to wall and adds points
         for (int i = 0; i < 5; i++) {
             points.addPoints(patternLines.get(i).finishRound());
-            //points = new Points(patternLines.get(i).finishRound().getValue()+points.getValue());
         }
         //substract points from floor
         points.addPoints(bin.finishRound());
-        //int tempResult = points.getValue() + bin.finishRound().getValue();
-        //points = new Points(tempResult>0?tempResult:0);
         //if a row is full, end the game
         return GameFinished.gameFinished(wall);
     }
 
     public void endGame(){
         points.addPoints(FinalPointsCalculation.getPoints(wall));
-        //points = new Points(FinalPointsCalculation.getPoints(wall).getValue()+ points.getValue());
     }
 
     public String state(){
@@ -51,7 +51,7 @@ public class Board{
         }
         toReturn.append("Floor:\n");
         toReturn.append(bin.state()).append("\n");
-        toReturn.append("Points:").append(this.points).append("\n");
+        toReturn.append(this.points).append("\n");
         return toReturn.toString();
     }
 }
