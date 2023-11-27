@@ -26,9 +26,9 @@ public class PatternLineTest {
         WallLine wallLine = new WallLine(tileTypes, null, null);
         Floor floor = new Floor(UsedTyles.getInstance(), pointPattern);
         PatternLine patternLine = new PatternLine(1, wallLine, floor);
-        assertEquals("Empty PatternLine", patternLine.state(), "-");
+        assertEquals("Empty PatternLine", "-", patternLine.state());
         patternLine.put(Collections.singleton(Tile.BLACK));
-        assertEquals("PatternLine with one B", patternLine.state(), "L");
+        assertEquals("PatternLine with one B", "L", patternLine.state());
     }
 
     @Test
@@ -48,23 +48,23 @@ public class PatternLineTest {
         Floor floor = new Floor(UsedTyles.getInstance(), pointPattern);
         PatternLine patternLine = new PatternLine(2, wallLine, floor);
         patternLine.put(Collections.singleton(Tile.BLACK));
-        assertEquals("PatternLine with one B", patternLine.state(), "L-");
+        assertEquals("PatternLine with one B", "L-", patternLine.state());
 
         List<Tile> tiles = new ArrayList<>();
         tiles.add(Tile.YELLOW);
         tiles.add(Tile.YELLOW);
 
         patternLine.put(tiles);
-        assertEquals("PatternLine has not changed", patternLine.state(), "L-");
-        assertEquals("Tiles were dumped to floor", floor.state(), "II");
+        assertEquals("PatternLine has not changed", "L-", patternLine.state());
+        assertEquals("Tiles were dumped to floor", "II", floor.state());
 
         tiles = new ArrayList<>();
         tiles.add(Tile.BLACK);
         tiles.add(Tile.BLACK);
 
         patternLine.put(tiles);
-        assertEquals("PatternLine has changed", patternLine.state(), "LL");
-        assertEquals("Rest was dumped to floor", floor.state(), "IIL");
+        assertEquals("PatternLine has changed", "LL", patternLine.state());
+        assertEquals("Rest was dumped to floor", "IIL", floor.state());
     }
 
     @Test
@@ -91,8 +91,8 @@ public class PatternLineTest {
         tiles.add(Tile.YELLOW);
         patternLine.put(tiles);
         Points pp = patternLine.finishRound();
-        assertNotEquals("Points are not zero", pp, new Points(0));
-        assertEquals("UsedTyles containsa the other yellow tile", UsedTyles.getInstance().state(), "I");
+        assertNotEquals("Points are not zero", new Points(0), pp);
+        assertEquals("UsedTyles containsa the other yellow tile", "I", UsedTyles.getInstance().state());
 
         //patterline that cannot put to wall
 
@@ -103,11 +103,11 @@ public class PatternLineTest {
         wallLine.putTile(Tile.YELLOW);
         patternLine.put(Collections.singleton(Tile.YELLOW));
         pp = patternLine.finishRound();
-        assertEquals("Because the patternline was not full", pp, new Points(0));
-        assertEquals("UsedTyles did not change", UsedTyles.getInstance().state(), "I");
+        assertEquals("Because the patternline was not full", new Points(0), pp);
+        assertEquals("UsedTyles did not change", "I", UsedTyles.getInstance().state());
         patternLine.put(Collections.singleton(Tile.YELLOW));
         pp = patternLine.finishRound();
-        assertEquals("Points are zero", pp, new Points(0));
-        assertEquals("UsedTyles still did not change", UsedTyles.getInstance().state(), "I");
+        assertEquals("Points are zero", new Points(0), pp);
+        assertEquals("UsedTyles still did not change", "I", UsedTyles.getInstance().state());
     }
 }
