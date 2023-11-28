@@ -64,6 +64,11 @@ public class WallLineTest {
     tileTypes.add(Tile.YELLOW);
     tileTypes.add(Tile.BLACK);
 
+    WallLine wallLine0 = new WallLine(tileTypes, null, null);
+    wallLine0.putTile(Tile.BLUE);
+    Points points = wallLine0.putTile(Tile.GREEN);
+    assertEquals("Should make 2 points.", new Points(2), points);
+
     WallLine wallLine = new WallLine(tileTypes, null, null);
 
     assertTrue("Testing if tiles is actually put. Not present yet.", wallLine.canPutTile(Tile.GREEN));
@@ -86,7 +91,7 @@ public class WallLineTest {
     assertEquals("Testing point gain from put. Nothing adjadcent.", new Points(1), points1);
 
     Points points2 = wallLine2.putTile(Tile.BLACK);
-    assertEquals("Testing point gain from put. Vertical and horizontal adjacent.", new Points(5), points2);
+    assertEquals("Testing point gain from put. Vertical and horizontal adjacent.", new Points(4), points2);
   }
 
   @Test
