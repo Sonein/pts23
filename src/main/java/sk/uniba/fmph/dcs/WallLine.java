@@ -84,7 +84,8 @@ public class WallLine {
         }
         int verticalPoints = rIdx - lIdx + 1;
 
-        int points = horizontalPoints == 1 && verticalPoints == 1 ? 1 : horizontalPoints + verticalPoints;
+        //int points = horizontalPoints == 1 && verticalPoints == 1 ? 1 : horizontalPoints + verticalPoints;
+        int points = horizontalPoints == 1 && verticalPoints == 1 ? 1 : (horizontalPoints == 1 ? 0 : horizontalPoints) + (verticalPoints == 1 ? 0 : horizontalPoints);
 
         return new Points(points);
     }

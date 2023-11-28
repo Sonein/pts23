@@ -78,6 +78,6 @@ public class BoardTest {
         assertTrue("Game has ended but points were not counted", board.state().contains("[value=1]"));
 
         board.endGame();
-        assertTrue("Final points were calculated", board.state().contains("[value=13]"));
+        assertTrue("Final points were calculated 1 in floor, 2 for row complete -10 for successful puts that were just simulated", board.state().contains("[value=3]"));
     }
 }

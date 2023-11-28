@@ -37,7 +37,7 @@ public class FinalPointsCalculation {
         for(int i = 0; i < 5; i++){
             boolean colorIncomplete = false;
             for(int j = 0; j < 5; j++){
-                if(wall.get(i).getTiles().get((i+j)%5).isEmpty()){
+                if(wall.get(j).getTiles().get((i+j)%5).isEmpty()){
                     colorIncomplete = true;
                     break;
                 }
